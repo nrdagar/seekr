@@ -222,6 +222,7 @@ func GetInfo(apiConfig ApiConfig, c *gin.Context) {
 
 		c.IndentedJSON(http.StatusOK, map[string]interface{}{
 			"version":      apiConfig.Version.String(),
+			"version_name": apiConfig.Version.DisplayLabel("testing"),
 			"is_latest":    true,
 			"latest":       apiConfig.Version.String(),
 			"download_url": "https://github.com/seekr-osint/seekr/releases/download/0.0.1/seekr_0.0.1_linux_arm64",
@@ -230,6 +231,7 @@ func GetInfo(apiConfig ApiConfig, c *gin.Context) {
 	}
 	c.IndentedJSON(http.StatusOK, map[string]interface{}{
 		"version":      apiConfig.Version.String(),
+		"version_name": apiConfig.Version.DisplayLabel("testing"),
 		"is_latest":    apiConfig.Version.IsLatest(),
 		"latest":       apiConfig.Version.GetLatest(),
 		"download_url": apiConfig.Version.GetLatest().DownloadURL(),

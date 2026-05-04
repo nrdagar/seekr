@@ -41,6 +41,13 @@ func (sv SchematicVersion) String() string {
 	return fmt.Sprintf("%d.%d.%d", sv.Major, sv.Minor, sv.Patch)
 }
 
+func (sv SchematicVersion) DisplayLabel(channel string) string {
+	if channel == "" {
+		channel = "stable"
+	}
+	return fmt.Sprintf("Seekr %s (%s)", sv.String(), channel)
+}
+
 func (sv1 SchematicVersion) CompareIsLatest(sv2 SchematicVersion) bool {
 	if sv1.Major > sv2.Major {
 		return true

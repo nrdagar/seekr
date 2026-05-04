@@ -62,6 +62,10 @@ function createThemeCards(theme: string) {
 // SEEKR config stuff
 
 type SeekrConfig = tsGenConfig.Config
+type SeekrInfo = {
+  version: string;
+  version_name?: string;
+}
 //interface SeekrConfig {
 //  general: {
 //    browser: boolean;
@@ -83,6 +87,12 @@ async function getCurrentConfig(): Promise<SeekrConfig> {
   const response = await fetch(apiCall('/config'));
   const data = await response.json();
   return data as SeekrConfig;
+}
+
+async function getSeekrInfo(): Promise<SeekrInfo> {
+  const response = await fetch(apiCall('/inf'));
+  const data = await response.json();
+  return data as SeekrInfo;
 }
 
 async function postSeekrConfig(config: SeekrConfig): Promise<string> {
@@ -107,6 +117,13 @@ function setValues(config: SeekrConfig): void {
 
   if (ipInput) {
     ipInput.value = config.server.ip.toString();
+  }
+}
+
+function setVersionInfo(info: SeekrInfo): void {
+  const versionLabel = document.getElementById("version-label") as HTMLParagraphElement;
+  if (versionLabel) {
+    versionLabel.innerHTML = info.version_name ?? info.version;
   }
 }
 
@@ -139,8 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (saveBtn) {
     (async () => {
       const currentConfig = await getCurrentConfig();
+      const currentInfo = await getSeekrInfo();
       // console.log('Current Config:', currentConfig);
       setValues(currentConfig);
+      setVersionInfo(currentInfo);
     })();
 
     saveBtn.addEventListener('click', async () => {
